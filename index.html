@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flight Reservation Form</title>
+    <title>Flight Reservation System - India Domestic</title>
     <style>
         * {
             margin: 0;
@@ -132,6 +132,14 @@
             background: #c0392b;
         }
         
+        .btn-add {
+            background: #9b59b6;
+        }
+        
+        .btn-add:hover {
+            background: #8e44ad;
+        }
+        
         .button-group {
             display: flex;
             gap: 15px;
@@ -255,8 +263,6 @@
         }
         
         .passenger-details {
-            display: flex;
-            justify-content: space-between;
             margin-top: 15px;
             padding-top: 15px;
             border-top: 1px dashed #ddd;
@@ -315,6 +321,102 @@
             border-radius: 4px;
         }
         
+        .passenger-entry {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        
+        .passenger-title {
+            width: 80px;
+        }
+        
+        .passenger-name {
+            flex: 2;
+        }
+        
+        .passenger-ticket {
+            flex: 1;
+        }
+        
+        .remove-passenger {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .passenger-section {
+            margin-bottom: 20px;
+        }
+        
+        .passenger-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .passenger-columns {
+            display: flex;
+            margin-bottom: 10px;
+            font-weight: bold;
+            padding: 0 10px;
+        }
+        
+        .passenger-column-title {
+            width: 80px;
+        }
+        
+        .passenger-column-name {
+            flex: 2;
+        }
+        
+        .passenger-column-ticket {
+            flex: 1;
+        }
+        
+        .passenger-column-action {
+            width: 30px;
+        }
+        
+        .preview-passenger-list {
+            margin-top: 10px;
+        }
+        
+        .preview-passenger-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 8px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .contact-details {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            display: none;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        .contact-item {
+            text-align: center;
+        }
+        
         /* Print styles - only show the itinerary */
         @media print {
             body * {
@@ -346,12 +448,25 @@
                 margin-bottom: 15px;
             }
             
-            .reservation-codes, .airline-info, .flight-info, .passenger-details {
+            .reservation-codes, .airline-info, .flight-info, .contact-info {
                 flex-direction: column;
             }
             
-            .reservation-codes > div, .airline-info > div, .flight-info > div, .passenger-details > div {
+            .reservation-codes > div, .airline-info > div, .flight-info > div, .contact-info > div {
                 margin-bottom: 10px;
+            }
+            
+            .passenger-entry {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .passenger-title, .passenger-name, .passenger-ticket {
+                width: 100%;
+            }
+            
+            .passenger-columns {
+                display: none;
             }
         }
     </style>
@@ -359,8 +474,8 @@
 <body>
     <div class="container no-print">
         <header>
-            <h1>Flight Reservation System</h1>
-            <p class="subtitle">Book your flight and generate a printable itinerary</p>
+            <h1>Indian Domestic Flight Reservation</h1>
+            <p class="subtitle">Book your domestic flight within India and generate a printable itinerary</p>
         </header>
         
         <div class="card">
@@ -372,28 +487,57 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <label for="departure">Departure City (Saudi Arabia)</label>
+                                <label for="departure">Departure City</label>
                                 <select id="departure" required>
                                     <option value="">Select departure city</option>
-                                    <option value="JED">Jeddah (JED)</option>
-                                    <option value="MED">Medina (MED)</option>
-                                    <option value="DMM">Dammam (DMM)</option>
-                                    <option value="RUH">Riyadh (RUH)</option>
+                                    <option value="DEL">Delhi - Indira Gandhi International Airport (DEL)</option>
+                                    <option value="BOM">Mumbai - Chhatrapati Shivaji International Airport (BOM)</option>
+                                    <option value="BLR">Bengaluru - Kempegowda International Airport (BLR)</option>
+                                    <option value="HYD">Hyderabad - Rajiv Gandhi International Airport (HYD)</option>
+                                    <option value="MAA">Chennai - Chennai International Airport (MAA)</option>
+                                    <option value="CCU">Kolkata - Netaji Subhas Chandra Bose International Airport (CCU)</option>
+                                    <option value="AMD">Ahmedabad - Sardar Vallabhbhai Patel International Airport (AMD)</option>
+                                    <option value="GOI">Goa - Dabolim Airport (GOI)</option>
+                                    <option value="PNQ">Pune - Pune Airport (PNQ)</option>
+                                    <option value="COK">Kochi - Cochin International Airport (COK)</option>
+                                    <option value="LKO">Lucknow - Chaudhary Charan Singh International Airport (LKO)</option>
+                                    <option value="GAU">Guwahati - Lokpriya Gopinath Bordoloi International Airport (GAU)</option>
+                                    <option value="BBI">Bhubaneswar - Biju Patnaik International Airport (BBI)</option>
+                                    <option value="IXC">Chandigarh - Chandigarh Airport (IXC)</option>
+                                    <option value="JAI">Jaipur - Jaipur International Airport (JAI)</option>
+                                    <option value="SXR">Srinagar - Sheikh ul-Alam International Airport (SXR)</option>
+                                    <option value="TRV">Thiruvananthapuram - Trivandrum International Airport (TRV)</option>
+                                    <option value="PAT">Patna - Jay Prakash Narayan Airport (PAT)</option>
+                                    <option value="IXB">Bagdogra - Bagdogra Airport (IXB)</option>
+                                    <option value="IXZ">Port Blair - Veer Savarkar International Airport (IXZ)</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label for="arrival">Arrival City (India)</label>
+                                <label for="arrival">Arrival City</label>
                                 <select id="arrival" required>
                                     <option value="">Select arrival city</option>
-                                    <option value="BOM">Mumbai (BOM)</option>
-                                    <option value="DEL">New Delhi (DEL)</option>
-                                    <option value="LKO">Lucknow (LKO)</option>
-                                    <option value="MAA">Chennai (MAA)</option>
-                                    <option value="COK">Kochi (COK)</option>
-                                    <option value="HYD">Hyderabad (HYD)</option>
-                                    <option value="AMD">Ahmedabad (AMD)</option>
+                                    <option value="DEL">Delhi - Indira Gandhi International Airport (DEL)</option>
+                                    <option value="BOM">Mumbai - Chhatrapati Shivaji International Airport (BOM)</option>
+                                    <option value="BLR">Bengaluru - Kempegowda International Airport (BLR)</option>
+                                    <option value="HYD">Hyderabad - Rajiv Gandhi International Airport (HYD)</option>
+                                    <option value="MAA">Chennai - Chennai International Airport (MAA)</option>
+                                    <option value="CCU">Kolkata - Netaji Subhas Chandra Bose International Airport (CCU)</option>
+                                    <option value="AMD">Ahmedabad - Sardar Vallabhbhai Patel International Airport (AMD)</option>
+                                    <option value="GOI">Goa - Dabolim Airport (GOI)</option>
+                                    <option value="PNQ">Pune - Pune Airport (PNQ)</option>
+                                    <option value="COK">Kochi - Cochin International Airport (COK)</option>
+                                    <option value="LKO">Lucknow - Chaudhary Charan Singh International Airport (LKO)</option>
+                                    <option value="GAU">Guwahati - Lokpriya Gopinath Bordoloi International Airport (GAU)</option>
+                                    <option value="BBI">Bhubaneswar - Biju Patnaik International Airport (BBI)</option>
+                                    <option value="IXC">Chandigarh - Chandigarh Airport (IXC)</option>
+                                    <option value="JAI">Jaipur - Jaipur International Airport (JAI)</option>
+                                    <option value="SXR">Srinagar - Sheikh ul-Alam International Airport (SXR)</option>
+                                    <option value="TRV">Thiruvananthapuram - Trivandrum International Airport (TRV)</option>
+                                    <option value="PAT">Patna - Jay Prakash Narayan Airport (PAT)</option>
+                                    <option value="IXB">Bagdogra - Bagdogra Airport (IXB)</option>
+                                    <option value="IXZ">Port Blair - Veer Savarkar International Airport (IXZ)</option>
                                 </select>
                             </div>
                         </div>
@@ -405,8 +549,16 @@
                                 <label for="airline">Airline</label>
                                 <select id="airline" required>
                                     <option value="">Select airline</option>
-                                    <option value="SV">Saudi Airlines (SV)</option>
                                     <option value="AI">Air India (AI)</option>
+                                    <option value="6E">IndiGo (6E)</option>
+                                    <option value="SG">SpiceJet (SG)</option>
+                                    <option value="UK">Vistara (UK)</option>
+                                    <option value="G8">Go First (G8)</option>
+                                    <option value="I5">AirAsia India (I5)</option>
+                                    <option value="9I">Alliance Air (9I)</option>
+                                    <option value="2T">TruJet (2T)</option>
+                                    <option value="S5">Star Air (S5)</option>
+                                    <option value="QP">Akasa Air (QP)</option>
                                 </select>
                             </div>
                         </div>
@@ -429,7 +581,7 @@
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label for="companyLogo">ALMATAR.COM Logo (Optional)</label>
+                                <label for="companyLogo">TravelPortal Logo (Optional)</label>
                                 <input type="file" id="companyLogo" accept=".jpg, .jpeg, .png, .svg, .gif">
                                 <div class="logo-info">Recommended: 150px × 50px (JPG, PNG, SVG, GIF)</div>
                                 <div class="company-logo-preview" id="companyLogoPreview"></div>
@@ -440,13 +592,13 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <label for="departureDate">Departure Date (Saudi Time)</label>
+                                <label for="departureDate">Departure Date</label>
                                 <input type="date" id="departureDate" required>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label for="departureTime">Departure Time (Saudi Time)</label>
+                                <label for="departureTime">Departure Time</label>
                                 <input type="time" id="departureTime" required>
                             </div>
                         </div>
@@ -455,14 +607,43 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <label for="arrivalDate">Arrival Date (India Time)</label>
+                                <label for="arrivalDate">Arrival Date</label>
                                 <input type="date" id="arrivalDate" required>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label for="arrivalTime">Arrival Time (India Time)</label>
+                                <label for="arrivalTime">Arrival Time</label>
                                 <input type="time" id="arrivalTime" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="passenger-section">
+                        <div class="passenger-section-header">
+                            <label>Passenger Details</label>
+                            <button type="button" class="btn btn-add" id="addPassengerBtn">Add Passenger</button>
+                        </div>
+                        
+                        <div class="passenger-columns">
+                            <div class="passenger-column-title">Title</div>
+                            <div class="passenger-column-name">Passenger Name</div>
+                            <div class="passenger-column-ticket">Ticket Number</div>
+                            <div class="passenger-column-action"></div>
+                        </div>
+                        
+                        <div id="passengerContainer">
+                            <div class="passenger-entry" data-passenger-id="1">
+                                <select class="passenger-title" required>
+                                    <option value="">Title</option>
+                                    <option value="Mr">Mr</option>
+                                    <option value="Mrs">Mrs</option>
+                                    <option value="Miss">Miss</option>
+                                    <option value="Mstr">Mstr</option>
+                                </select>
+                                <input type="text" class="passenger-name" placeholder="Enter full name" required>
+                                <input type="text" class="passenger-ticket" placeholder="Ticket number" required>
+                                <button type="button" class="remove-passenger" style="display: none;">×</button>
                             </div>
                         </div>
                     </div>
@@ -470,14 +651,14 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <label for="passengerName">Passenger Name</label>
-                                <input type="text" id="passengerName" placeholder="Enter full name" required>
+                                <label for="customerEmail">Customer Email (Optional)</label>
+                                <input type="email" id="customerEmail" placeholder="Enter customer email">
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label for="ticketNumber">Ticket Number</label>
-                                <input type="text" id="ticketNumber" placeholder="Enter ticket number" required>
+                                <label for="customerMobile">Customer Mobile (Optional)</label>
+                                <input type="tel" id="customerMobile" placeholder="Enter customer mobile number">
                             </div>
                         </div>
                     </div>
@@ -494,16 +675,16 @@
     <div class="itinerary-preview" id="itineraryPreview">
         <div class="preview-header">
             <div class="trip-title" id="previewTripTitle">TRIP TO MUMBAI, INDIA</div>
-            <div class="passenger-info">PREPARED FOR<br><strong id="previewPassengerName">ANSARI/HINDA AKIF</strong></div>
+            <div class="passenger-info">PREPARED FOR<br><strong id="previewPassengerName">MR RAJ SHARMA</strong></div>
         </div>
         
         <div class="reservation-codes">
-            <div><strong>RESERVATION CODE:</strong> <span id="previewReservationCode">FKJNIT</span></div>
-            <div><strong>AIRLINE RESERVATION CODE:</strong> <span id="previewAirlineCode">DXEYUF (SV)</span></div>
+            <div><strong>RESERVATION CODE:</strong> <span id="previewReservationCode">INDFLT</span></div>
+            <div><strong>AIRLINE RESERVATION CODE:</strong> <span id="previewAirlineCode">DXEYUF (AI)</span></div>
             <div class="company-logo-container">
-                <img id="previewCompanyLogo" src="" alt="ALMATAR.COM Logo" class="company-logo">
+                <img id="previewCompanyLogo" src="" alt="TravelPortal Logo" class="company-logo">
                 <div>
-                    <strong>ALMATAR.COM</strong><br>920005511
+                    <strong>TravelPortal</strong><br>+91 98765 43210
                 </div>
             </div>
         </div>
@@ -516,13 +697,13 @@
                     <div class="airline-logo-container">
                         <img id="previewAirlineLogo" src="" alt="Airline Logo" class="airline-logo">
                         <div>
-                            <strong id="previewAirlineName">SAUDI AIRLINES</strong><br>
-                            <span id="previewFlightCode">SV 0057</span>
+                            <strong id="previewAirlineName">AIR INDIA</strong><br>
+                            <span id="previewFlightCode">AI 0057</span>
                         </div>
                     </div>
                     <div>
                         <div class="info-label">Duration:</div>
-                        <div class="info-value" id="previewDuration">3hr(s) 30min(s)</div>
+                        <div class="info-value" id="previewDuration">2hr(s) 15min(s)</div>
                     </div>
                     <div>
                         <div class="info-label">Cabin:</div>
@@ -536,10 +717,10 @@
                 
                 <div class="route-details">
                     <div class="departure">
-                        <div class="airport-code" id="previewDepartureCode">JED</div>
-                        <div id="previewDepartureCity">JEDDAH, SAUDI ARABIA</div>
+                        <div class="airport-code" id="previewDepartureCode">DEL</div>
+                        <div id="previewDepartureCity">DELHI, INDIA</div>
                         <div class="time">Departing At: <span id="previewDepartureTime">06:30</span></div>
-                        <div>Terminal: TERMINAL 1</div>
+                        <div>Terminal: TERMINAL 3</div>
                     </div>
                     
                     <div style="text-align: center; width: 10%; padding-top: 20px;">→</div>
@@ -547,7 +728,7 @@
                     <div class="arrival">
                         <div class="airport-code" id="previewArrivalCode">BOM</div>
                         <div id="previewArrivalCity">MUMBAI, INDIA</div>
-                        <div class="time">Arriving At: <span id="previewArrivalTime">12:30</span></div>
+                        <div class="time">Arriving At: <span id="previewArrivalTime">08:45</span></div>
                         <div>Terminal: TERMINAL 2</div>
                     </div>
                 </div>
@@ -559,7 +740,7 @@
                     </div>
                     <div class="info-item">
                         <div class="info-label">Distance:</div>
-                        <div class="info-value" id="previewDistance">1500 Miles</div>
+                        <div class="info-value" id="previewDistance">1150 Kilometers</div>
                     </div>
                     <div class="info-item">
                         <div class="info-label">Meals:</div>
@@ -567,32 +748,41 @@
                     </div>
                     <div class="info-item">
                         <div class="info-label">Est. emission:</div>
-                        <div class="info-value" id="previewEmission">172.48 kg CO2</div>
+                        <div class="info-value" id="previewEmission">85.25 kg CO2</div>
                     </div>
                 </div>
                 
                 <div class="passenger-details">
-                    <div>
-                        <div class="info-label">Passenger Name:</div>
-                        <div class="info-value" id="previewPassenger">ANSARI/HINDA AKIF</div>
+                    <div class="info-label">Passenger Name(s) & Ticket Numbers:</div>
+                    <div class="preview-passenger-list" id="previewPassengerList">
+                        <div class="preview-passenger-item">
+                            <span class="passenger-name">MR RAJ SHARMA</span>
+                            <span class="passenger-ticket">0722999963076</span>
+                        </div>
                     </div>
-                    <div>
-                        <div class="info-label">Seats:</div>
-                        <div class="info-value">Check-In Required</div>
-                    </div>
-                    <div>
-                        <div class="info-label">eTicket Receipt(s):</div>
-                        <div class="info-value" id="previewTicketNumber">0722999963076</div>
-                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="contact-details" id="previewContactDetails">
+            <div class="info-label">Customer Contact Details:</div>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="info-label">Email:</div>
+                    <div class="info-value" id="previewCustomerEmail">customer@example.com</div>
+                </div>
+                <div class="contact-item">
+                    <div class="info-label">Mobile:</div>
+                    <div class="info-value" id="previewCustomerMobile">+91 98765 43210</div>
                 </div>
             </div>
         </div>
         
         <div class="footer">
             <div class="company-logo-container">
-                <img id="previewFooterCompanyLogo" src="" alt="ALMATAR.COM Logo" class="company-logo">
+                <img id="previewFooterCompanyLogo" src="" alt="TravelPortal Logo" class="company-logo">
                 <div>
-                    <strong>ALMATAR.COM</strong><br>920005511
+                    <strong>TravelPortal</strong><br>+91 98765 43210
                 </div>
             </div>
         </div>
@@ -605,27 +795,38 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Get all elements
             const form = document.getElementById('flightForm');
             const generateBtn = document.getElementById('generateBtn');
             const printBtn = document.getElementById('printBtn');
             const editBtn = document.getElementById('editBtn');
             const resetBtn = document.getElementById('resetBtn');
+            const addPassengerBtn = document.getElementById('addPassengerBtn');
             const itineraryPreview = document.getElementById('itineraryPreview');
             const logoInput = document.getElementById('airlineLogo');
             const logoPreview = document.getElementById('logoPreview');
             const companyLogoInput = document.getElementById('companyLogo');
             const companyLogoPreview = document.getElementById('companyLogoPreview');
+            const passengerContainer = document.getElementById('passengerContainer');
+            const previewPassengerList = document.getElementById('previewPassengerList');
+            const previewContactDetails = document.getElementById('previewContactDetails');
+            
             let uploadedLogo = null;
             let uploadedCompanyLogo = null;
+            let passengerCount = 1;
             
             // Airline data
             const airlines = {
-                'SV': {
-                    name: 'SAUDI AIRLINES'
-                },
-                'AI': {
-                    name: 'AIR INDIA'
-                }
+                'AI': { name: 'AIR INDIA' },
+                '6E': { name: 'INDIGO' },
+                'SG': { name: 'SPICEJET' },
+                'UK': { name: 'VISTARA' },
+                'G8': { name: 'GO FIRST' },
+                'I5': { name: 'AIRASIA INDIA' },
+                '9I': { name: 'ALLIANCE AIR' },
+                '2T': { name: 'TRUJET' },
+                'S5': { name: 'STAR AIR' },
+                'QP': { name: 'AKASA AIR' }
             };
             
             // Set default date to today
@@ -636,53 +837,107 @@
             
             // Airport data
             const airports = {
-                // Saudi Arabia departure airports
-                'JED': { city: 'JEDDAH, SAUDI ARABIA', country: 'SAUDI ARABIA' },
-                'MED': { city: 'MEDINA, SAUDI ARABIA', country: 'SAUDI ARABIA' },
-                'DMM': { city: 'DAMMAM, SAUDI ARABIA', country: 'SAUDI ARABIA' },
-                'RUH': { city: 'RIYADH, SAUDI ARABIA', country: 'SAUDI ARABIA' },
-                
-                // India arrival airports
+                'DEL': { city: 'DELHI, INDIA', country: 'INDIA' },
                 'BOM': { city: 'MUMBAI, INDIA', country: 'INDIA' },
-                'DEL': { city: 'NEW DELHI, INDIA', country: 'INDIA' },
-                'LKO': { city: 'LUCKNOW, INDIA', country: 'INDIA' },
-                'MAA': { city: 'CHENNAI, INDIA', country: 'INDIA' },
-                'COK': { city: 'KOCHI, INDIA', country: 'INDIA' },
+                'BLR': { city: 'BENGALURU, INDIA', country: 'INDIA' },
                 'HYD': { city: 'HYDERABAD, INDIA', country: 'INDIA' },
-                'AMD': { city: 'AHMEDABAD, INDIA', country: 'INDIA' }
+                'MAA': { city: 'CHENNAI, INDIA', country: 'INDIA' },
+                'CCU': { city: 'KOLKATA, INDIA', country: 'INDIA' },
+                'AMD': { city: 'AHMEDABAD, INDIA', country: 'INDIA' },
+                'GOI': { city: 'GOA, INDIA', country: 'INDIA' },
+                'PNQ': { city: 'PUNE, INDIA', country: 'INDIA' },
+                'COK': { city: 'KOCHI, INDIA', country: 'INDIA' },
+                'LKO': { city: 'LUCKNOW, INDIA', country: 'INDIA' },
+                'GAU': { city: 'GUWAHATI, INDIA', country: 'INDIA' },
+                'BBI': { city: 'BHUBANESWAR, INDIA', country: 'INDIA' },
+                'IXC': { city: 'CHANDIGARH, INDIA', country: 'INDIA' },
+                'JAI': { city: 'JAIPUR, INDIA', country: 'INDIA' },
+                'SXR': { city: 'SRINAGAR, INDIA', country: 'INDIA' },
+                'TRV': { city: 'THIRUVANANTHAPURAM, INDIA', country: 'INDIA' },
+                'PAT': { city: 'PATNA, INDIA', country: 'INDIA' },
+                'IXB': { city: 'BAGDOGRA, INDIA', country: 'INDIA' },
+                'IXZ': { city: 'PORT BLAIR, INDIA', country: 'INDIA' }
             };
             
-            // Distances between airports (in miles)
+            // Distances between airports (in kilometers)
             const distances = {
-                'JED-BOM': 1500,
-                'JED-DEL': 2000,
-                'JED-LKO': 2100,
-                'JED-MAA': 1800,
-                'JED-COK': 1900,
-                'JED-HYD': 1700,
-                'JED-AMD': 1600,
-                'MED-BOM': 1600,
-                'MED-DEL': 2100,
-                'MED-LKO': 2200,
-                'MED-MAA': 1900,
-                'MED-COK': 2000,
-                'MED-HYD': 1800,
-                'MED-AMD': 1700,
-                'DMM-BOM': 1400,
-                'DMM-DEL': 1900,
-                'DMM-LKO': 2000,
-                'DMM-MAA': 1700,
-                'DMM-COK': 1800,
-                'DMM-HYD': 1600,
-                'DMM-AMD': 1500,
-                'RUH-BOM': 1450,
-                'RUH-DEL': 1950,
-                'RUH-LKO': 2050,
-                'RUH-MAA': 1750,
-                'RUH-COK': 1850,
-                'RUH-HYD': 1650,
-                'RUH-AMD': 1550
+                'DEL-BOM': 1150,
+                'DEL-BLR': 1750,
+                'DEL-HYD': 1260,
+                'DEL-MAA': 1760,
+                'DEL-CCU': 1305,
+                'DEL-AMD': 780,
+                'DEL-GOI': 1515,
+                'DEL-PNQ': 1170,
+                'DEL-COK': 2070,
+                'DEL-LKO': 440,
+                'DEL-GAU': 1470,
+                'DEL-BBI': 1220,
+                'DEL-IXC': 240,
+                'DEL-JAI': 260,
+                'DEL-SXR': 665,
+                'DEL-TRV': 2330,
+                'DEL-PAT': 850,
+                'DEL-IXB': 1090,
+                'DEL-IXZ': 2530,
+                'BOM-BLR': 845,
+                'BOM-HYD': 620,
+                'BOM-MAA': 1035,
+                'BOM-CCU': 1660,
+                'BOM-AMD': 440,
+                'BOM-GOI': 445,
+                'BOM-PNQ': 120,
+                'BOM-COK': 965,
+                'BOM-LKO': 1165,
+                'BOM-GAU': 2020,
+                'BOM-BBI': 1210,
+                'BOM-IXC': 1435,
+                'BOM-JAI': 1140,
+                'BOM-SXR': 1645,
+                'BOM-TRV': 1275,
+                'BOM-PAT': 1435,
+                'BOM-IXB': 1665,
+                'BOM-IXZ': 2215
             };
+            
+            // Add passenger function
+            function addPassenger() {
+                if (passengerCount >= 9) {
+                    alert('Maximum 9 passengers allowed');
+                    return;
+                }
+                
+                passengerCount++;
+                const passengerEntry = document.createElement('div');
+                passengerEntry.className = 'passenger-entry';
+                passengerEntry.setAttribute('data-passenger-id', passengerCount);
+                passengerEntry.innerHTML = `
+                    <select class="passenger-title" required>
+                        <option value="">Title</option>
+                        <option value="Mr">Mr</option>
+                        <option value="Mrs">Mrs</option>
+                        <option value="Miss">Miss</option>
+                        <option value="Mstr">Mstr</option>
+                    </select>
+                    <input type="text" class="passenger-name" placeholder="Enter full name" required>
+                    <input type="text" class="passenger-ticket" placeholder="Ticket number" required>
+                    <button type="button" class="remove-passenger">×</button>
+                `;
+                
+                passengerContainer.appendChild(passengerEntry);
+                
+                // Add event listener to the remove button
+                const removeBtn = passengerEntry.querySelector('.remove-passenger');
+                removeBtn.addEventListener('click', function() {
+                    passengerContainer.removeChild(passengerEntry);
+                    passengerCount--;
+                    
+                    // Hide remove button if only one passenger remains
+                    if (passengerCount === 1) {
+                        document.querySelector('.remove-passenger').style.display = 'none';
+                    }
+                });
+            }
             
             // Handle logo upload
             logoInput.addEventListener('change', function(e) {
@@ -716,6 +971,9 @@
                 }
             });
             
+            // Add event listener to add passenger button
+            addPassengerBtn.addEventListener('click', addPassenger);
+            
             // Reset form
             resetBtn.addEventListener('click', function() {
                 uploadedLogo = null;
@@ -723,6 +981,23 @@
                 logoPreview.innerHTML = '';
                 companyLogoPreview.innerHTML = '';
                 itineraryPreview.style.display = 'none';
+                
+                // Reset passenger count and container
+                passengerCount = 1;
+                passengerContainer.innerHTML = `
+                    <div class="passenger-entry" data-passenger-id="1">
+                        <select class="passenger-title" required>
+                            <option value="">Title</option>
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Miss">Miss</option>
+                            <option value="Mstr">Mstr</option>
+                        </select>
+                        <input type="text" class="passenger-name" placeholder="Enter full name" required>
+                        <input type="text" class="passenger-ticket" placeholder="Ticket number" required>
+                        <button type="button" class="remove-passenger" style="display: none;">×</button>
+                    </div>
+                `;
             });
             
             // Generate random codes
@@ -735,20 +1010,18 @@
                 return result;
             }
             
-            // Calculate flight duration considering time zone difference
+            // Calculate flight duration
             function calculateDuration(depDate, depTime, arrDate, arrTime) {
                 // Create date objects for departure and arrival
                 const depDateTime = new Date(`${depDate}T${depTime}:00`);
                 const arrDateTime = new Date(`${arrDate}T${arrTime}:00`);
                 
-                // Account for time zone difference (Saudi Arabia is 2.5 hours behind India)
-                // So actual flight time = (arrival - departure) - 2.5 hours
-                const timeZoneDiff = 2.5 * 60 * 60 * 1000; // 2.5 hours in milliseconds
-                const actualFlightTime = (arrDateTime - depDateTime) - timeZoneDiff;
+                // Calculate the difference
+                const flightTime = arrDateTime - depDateTime;
                 
                 // Calculate hours and minutes
-                const hours = Math.floor(actualFlightTime / (1000 * 60 * 60));
-                const minutes = Math.floor((actualFlightTime % (1000 * 60 * 60)) / (1000 * 60));
+                const hours = Math.floor(flightTime / (1000 * 60 * 60));
+                const minutes = Math.floor((flightTime % (1000 * 60 * 60)) / (1000 * 60));
                 
                 return `${hours}hr(s) ${minutes}min(s)`;
             }
@@ -773,19 +1046,38 @@
                 const departureTime = document.getElementById('departureTime').value;
                 const arrivalDate = document.getElementById('arrivalDate').value;
                 const arrivalTime = document.getElementById('arrivalTime').value;
-                const passengerName = document.getElementById('passengerName').value;
-                const ticketNumber = document.getElementById('ticketNumber').value;
+                const customerEmail = document.getElementById('customerEmail').value;
+                const customerMobile = document.getElementById('customerMobile').value;
+                
+                // Get passenger details
+                const passengerEntries = document.querySelectorAll('.passenger-entry');
+                const passengers = [];
+                
+                for (let entry of passengerEntries) {
+                    const title = entry.querySelector('.passenger-title').value;
+                    const name = entry.querySelector('.passenger-name').value;
+                    const ticket = entry.querySelector('.passenger-ticket').value;
+                    
+                    if (!title || !name || !ticket) {
+                        alert('Please fill in all passenger details');
+                        return;
+                    }
+                    
+                    passengers.push({ title, name, ticket });
+                }
                 
                 // Validate form
-                if (!departure || !arrival || !airline || !flightNumber || !departureDate || !departureTime || !arrivalDate || !arrivalTime || !passengerName || !ticketNumber) {
+                if (!departure || !arrival || !airline || !flightNumber || !departureDate || !departureTime || !arrivalDate || !arrivalTime) {
                     alert('Please fill in all required fields');
                     return;
                 }
                 
+                // Format passenger names for display
+                const passengerNames = passengers.map(p => `${p.title} ${p.name}`).join(', ');
+                
                 // Update preview
                 document.getElementById('previewTripTitle').textContent = `TRIP TO ${airports[arrival].city}`;
-                document.getElementById('previewPassengerName').textContent = passengerName.toUpperCase();
-                document.getElementById('previewPassenger').textContent = passengerName.toUpperCase();
+                document.getElementById('previewPassengerName').textContent = passengerNames.toUpperCase();
                 
                 document.getElementById('previewReservationCode').textContent = generateRandomCode(6);
                 document.getElementById('previewAirlineCode').textContent = `${generateRandomCode(6)} (${airline})`;
@@ -832,8 +1124,8 @@
                 
                 // Calculate distance
                 const distanceKey = `${departure}-${arrival}`;
-                const distance = distances[distanceKey] || 1500;
-                document.getElementById('previewDistance').textContent = `${distance} Miles`;
+                const distance = distances[distanceKey] || 1000;
+                document.getElementById('previewDistance').textContent = `${distance} Kilometers`;
                 
                 // Set meals based on time
                 const depHour = parseInt(departureTime.split(':')[0]);
@@ -844,10 +1136,39 @@
                 document.getElementById('previewMeals').textContent = meals;
                 
                 // Calculate emissions (rough estimate)
-                const emission = (distance * 0.115).toFixed(2);
+                const emission = (distance * 0.074).toFixed(2);
                 document.getElementById('previewEmission').textContent = `${emission} kg CO2`;
                 
-                document.getElementById('previewTicketNumber').textContent = ticketNumber;
+                // Update passenger list in preview
+                previewPassengerList.innerHTML = '';
+                passengers.forEach(passenger => {
+                    const passengerItem = document.createElement('div');
+                    passengerItem.className = 'preview-passenger-item';
+                    passengerItem.innerHTML = `
+                        <span class="passenger-name">${passenger.title.toUpperCase()} ${passenger.name.toUpperCase()}</span>
+                        <span class="passenger-ticket">${passenger.ticket}</span>
+                    `;
+                    previewPassengerList.appendChild(passengerItem);
+                });
+                
+                // Update contact details if provided
+                if (customerEmail || customerMobile) {
+                    if (customerEmail) {
+                        document.getElementById('previewCustomerEmail').textContent = customerEmail;
+                    } else {
+                        document.getElementById('previewCustomerEmail').textContent = 'Not provided';
+                    }
+                    
+                    if (customerMobile) {
+                        document.getElementById('previewCustomerMobile').textContent = customerMobile;
+                    } else {
+                        document.getElementById('previewCustomerMobile').textContent = 'Not provided';
+                    }
+                    
+                    previewContactDetails.style.display = 'block';
+                } else {
+                    previewContactDetails.style.display = 'none';
+                }
                 
                 // Show preview
                 itineraryPreview.style.display = 'block';
