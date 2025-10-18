@@ -198,16 +198,17 @@
             margin-bottom: 15px;
         }
         
+        .airline-logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
         .airline-logo {
             width: 120px;
             height: 40px;
             object-fit: contain;
             margin-right: 15px;
-        }
-        
-        .airline-name {
-            display: flex;
-            align-items: center;
+            display: none;
         }
         
         .route-details {
@@ -270,6 +271,25 @@
             font-size: 14px;
         }
         
+        .logo-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .logo-preview {
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .logo-preview img {
+            max-width: 120px;
+            max-height: 40px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        
         /* Print styles - only show the itinerary */
         @media print {
             body * {
@@ -327,23 +347,28 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <label for="departure">Departure City</label>
+                                <label for="departure">Departure City (Saudi Arabia)</label>
                                 <select id="departure" required>
                                     <option value="">Select departure city</option>
-                                    <option value="BOM">Mumbai (BOM)</option>
-                                    <option value="DEL">New Delhi (DEL)</option>
+                                    <option value="JED">Jeddah (JED)</option>
+                                    <option value="MED">Medina (MED)</option>
+                                    <option value="DMM">Dammam (DMM)</option>
+                                    <option value="RUH">Riyadh (RUH)</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label for="arrival">Arrival City</label>
+                                <label for="arrival">Arrival City (India)</label>
                                 <select id="arrival" required>
                                     <option value="">Select arrival city</option>
-                                    <option value="JED">Jeddah (JED)</option>
-                                    <option value="MED">Medina (MED)</option>
-                                    <option value="DMM">Dammam (DMM)</option>
-                                    <option value="RUH">Riyadh (RUH)</option>
+                                    <option value="BOM">Mumbai (BOM)</option>
+                                    <option value="DEL">New Delhi (DEL)</option>
+                                    <option value="LKO">Lucknow (LKO)</option>
+                                    <option value="MAA">Chennai (MAA)</option>
+                                    <option value="COK">Kochi (COK)</option>
+                                    <option value="HYD">Hyderabad (HYD)</option>
+                                    <option value="AMD">Ahmedabad (AMD)</option>
                                 </select>
                             </div>
                         </div>
@@ -365,6 +390,20 @@
                                 <label for="flightNumber">Flight Number</label>
                                 <input type="text" id="flightNumber" placeholder="Enter flight number" required>
                             </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="airlineLogo">Airline Logo (Optional)</label>
+                                <input type="file" id="airlineLogo" accept=".jpg, .jpeg, .png, .svg, .gif">
+                                <div class="logo-info">Recommended: 120px × 40px (JPG, PNG, SVG, GIF)</div>
+                                <div class="logo-preview" id="logoPreview"></div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <!-- Empty column for alignment -->
                         </div>
                     </div>
                     
@@ -415,7 +454,7 @@
                     
                     <div class="button-group">
                         <button type="button" class="btn" id="generateBtn">Generate Itinerary</button>
-                        <button type="reset" class="btn btn-reset">Reset Form</button>
+                        <button type="reset" class="btn btn-reset" id="resetBtn">Reset Form</button>
                     </div>
                 </form>
             </div>
@@ -424,7 +463,7 @@
         
     <div class="itinerary-preview" id="itineraryPreview">
         <div class="preview-header">
-            <div class="trip-title" id="previewTripTitle">TRIP TO JEDDAH, SAUDI ARABIA</div>
+            <div class="trip-title" id="previewTripTitle">TRIP TO MUMBAI, INDIA</div>
             <div class="passenger-info">PREPARED FOR<br><strong id="previewPassengerName">ANSARI/HINDA AKIF</strong></div>
         </div>
         
@@ -439,7 +478,7 @@
             
             <div class="flight-details">
                 <div class="airline-info">
-                    <div class="airline-name">
+                    <div class="airline-logo-container">
                         <img id="previewAirlineLogo" src="" alt="Airline Logo" class="airline-logo">
                         <div>
                             <strong id="previewAirlineName">SAUDI AIRLINES</strong><br>
@@ -462,19 +501,19 @@
                 
                 <div class="route-details">
                     <div class="departure">
-                        <div class="airport-code" id="previewDepartureCode">BOM</div>
-                        <div id="previewDepartureCity">MUMBAI, INDIA</div>
+                        <div class="airport-code" id="previewDepartureCode">JED</div>
+                        <div id="previewDepartureCity">JEDDAH, SAUDI ARABIA</div>
                         <div class="time">Departing At: <span id="previewDepartureTime">06:30</span></div>
-                        <div>Terminal: TERMINAL 2 DOM AND INTL</div>
+                        <div>Terminal: TERMINAL 1</div>
                     </div>
                     
                     <div style="text-align: center; width: 10%; padding-top: 20px;">→</div>
                     
                     <div class="arrival">
-                        <div class="airport-code" id="previewArrivalCode">JED</div>
-                        <div id="previewArrivalCity">JEDDAH, SAUDI ARABIA</div>
+                        <div class="airport-code" id="previewArrivalCode">BOM</div>
+                        <div id="previewArrivalCity">MUMBAI, INDIA</div>
                         <div class="time">Arriving At: <span id="previewArrivalTime">12:30</span></div>
-                        <div>Terminal: TERMINAL 1</div>
+                        <div>Terminal: TERMINAL 2</div>
                     </div>
                 </div>
                 
@@ -531,17 +570,19 @@
             const generateBtn = document.getElementById('generateBtn');
             const printBtn = document.getElementById('printBtn');
             const editBtn = document.getElementById('editBtn');
+            const resetBtn = document.getElementById('resetBtn');
             const itineraryPreview = document.getElementById('itineraryPreview');
+            const logoInput = document.getElementById('airlineLogo');
+            const logoPreview = document.getElementById('logoPreview');
+            let uploadedLogo = null;
             
-            // Airline data with logos
+            // Airline data
             const airlines = {
                 'SV': {
-                    name: 'SAUDI AIRLINES',
-                    logo: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTIwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMDA2OTg2Ii8+CjxwYXRoIGQ9Ik0yMCAxMEwzMCAyMEw0MCAxMEg1MEwzNSAyNUw1MCA0MEg0MEwzMCAzMEwyMCA0MEgxMEwyNSAyNUwxMCAxMEgyMFoiIGZpbGw9IiNmZmYiLz4KPHN2ZyB4PSI2MCIgd2lkdGg9IjUwIiBoZWlnaHQ9IjMwIiB2aWV3Qm94PSIwIDAgNTAgMzAiIGZpbGw9Im5vbmUiPgo8cGF0aCBkPSJNMTAgMTBMMjAgMjBMMzAgMTBIMzVMMjUgMjBMMzUgMzBIMzBMMjAgMjVMMTAgMzBINUwxNSAyMEw1IDEwSDEwWiIgZmlsbD0iI2ZmZiIvPgo8L3N2Zz4KPC9zdmc+'
+                    name: 'SAUDI AIRLINES'
                 },
                 'AI': {
-                    name: 'AIR INDIA',
-                    logo: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTIwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRjE2MjI1Ii8+CjxwYXRoIGQ9Ik0yMCAxMUMzMi41IDExIDM1IDIwIDM1IDIwQzM1IDIwIDM3LjUgMTEgNTAgMTFDNjIuNSAxMSA2NSAyMCA2NSAyMEM2NSAyMCA2Ny41IDExIDgwIDExQzkyLjUgMTEgOTUgMjAgOTUgMjBDOTUgMjAgOTcuNSAxMSAxMTAgMTFDMTE3IDExIDEyMCAxNSAxMjAgMTVDMTIwIDE1IDExNyAyOSAxMTAgMjlDOTcuNSAyOSA5NSAyMCA5NSAyMEM5NSAyMCA5Mi41IDI5IDgwIDI5QzY3LjUgMjkgNjUgMjAgNjUgMjBDNjUgMjAgNjIuNSAyOSA1MCAyOUMzNy41IDI5IDM1IDIwIDM1IDIwQzM1IDIwIDMyLjUgMjkgMjAgMjlDMTMgMjkgMTAgMjUgMTAgMjVDMTAgMjUgMTMgMTEgMjAgMTFaIiBmaWxsPSIjZmZmIi8+CjxjaXJjbGUgY3g9IjIwIiBjeT0iMjAiIHI9IjUiIGZpbGw9IiNGMTYyMjUiLz4KPGNpcmNsZSBjeD0iODAiIGN5PSIyMCIgcj0iNSIgZmlsbD0iI0YxNjIyNSIvPgo8L3N2Zz4='
+                    name: 'AIR INDIA'
                 }
             };
             
@@ -553,25 +594,76 @@
             
             // Airport data
             const airports = {
-                'BOM': { city: 'MUMBAI, INDIA', country: 'INDIA' },
-                'DEL': { city: 'NEW DELHI, INDIA', country: 'INDIA' },
+                // Saudi Arabia departure airports
                 'JED': { city: 'JEDDAH, SAUDI ARABIA', country: 'SAUDI ARABIA' },
                 'MED': { city: 'MEDINA, SAUDI ARABIA', country: 'SAUDI ARABIA' },
                 'DMM': { city: 'DAMMAM, SAUDI ARABIA', country: 'SAUDI ARABIA' },
-                'RUH': { city: 'RIYADH, SAUDI ARABIA', country: 'SAUDI ARABIA' }
+                'RUH': { city: 'RIYADH, SAUDI ARABIA', country: 'SAUDI ARABIA' },
+                
+                // India arrival airports
+                'BOM': { city: 'MUMBAI, INDIA', country: 'INDIA' },
+                'DEL': { city: 'NEW DELHI, INDIA', country: 'INDIA' },
+                'LKO': { city: 'LUCKNOW, INDIA', country: 'INDIA' },
+                'MAA': { city: 'CHENNAI, INDIA', country: 'INDIA' },
+                'COK': { city: 'KOCHI, INDIA', country: 'INDIA' },
+                'HYD': { city: 'HYDERABAD, INDIA', country: 'INDIA' },
+                'AMD': { city: 'AHMEDABAD, INDIA', country: 'INDIA' }
             };
             
             // Distances between airports (in miles)
             const distances = {
-                'BOM-JED': 1500,
-                'BOM-MED': 1600,
-                'BOM-DMM': 1400,
-                'BOM-RUH': 1450,
-                'DEL-JED': 2000,
-                'DEL-MED': 2100,
-                'DEL-DMM': 1900,
-                'DEL-RUH': 1950
+                'JED-BOM': 1500,
+                'JED-DEL': 2000,
+                'JED-LKO': 2100,
+                'JED-MAA': 1800,
+                'JED-COK': 1900,
+                'JED-HYD': 1700,
+                'JED-AMD': 1600,
+                'MED-BOM': 1600,
+                'MED-DEL': 2100,
+                'MED-LKO': 2200,
+                'MED-MAA': 1900,
+                'MED-COK': 2000,
+                'MED-HYD': 1800,
+                'MED-AMD': 1700,
+                'DMM-BOM': 1400,
+                'DMM-DEL': 1900,
+                'DMM-LKO': 2000,
+                'DMM-MAA': 1700,
+                'DMM-COK': 1800,
+                'DMM-HYD': 1600,
+                'DMM-AMD': 1500,
+                'RUH-BOM': 1450,
+                'RUH-DEL': 1950,
+                'RUH-LKO': 2050,
+                'RUH-MAA': 1750,
+                'RUH-COK': 1850,
+                'RUH-HYD': 1650,
+                'RUH-AMD': 1550
             };
+            
+            // Handle logo upload
+            logoInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        uploadedLogo = event.target.result;
+                        logoPreview.innerHTML = `<img src="${uploadedLogo}" alt="Logo Preview">`;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    uploadedLogo = null;
+                    logoPreview.innerHTML = '';
+                }
+            });
+            
+            // Reset form
+            resetBtn.addEventListener('click', function() {
+                uploadedLogo = null;
+                logoPreview.innerHTML = '';
+                itineraryPreview.style.display = 'none';
+            });
             
             // Generate random codes
             function generateRandomCode(length) {
@@ -620,7 +712,7 @@
                 
                 // Validate form
                 if (!departure || !arrival || !airline || !flightNumber || !departureDate || !departureTime || !arrivalDate || !arrivalTime || !passengerName || !ticketNumber) {
-                    alert('Please fill in all fields');
+                    alert('Please fill in all required fields');
                     return;
                 }
                 
@@ -639,9 +731,17 @@
                 );
                 
                 // Set airline information
-                document.getElementById('previewAirlineLogo').src = airlines[airline].logo;
                 document.getElementById('previewAirlineName').textContent = airlines[airline].name;
                 document.getElementById('previewFlightCode').textContent = `${airline} ${flightNumber}`;
+                
+                // Set logo if uploaded
+                const logoElement = document.getElementById('previewAirlineLogo');
+                if (uploadedLogo) {
+                    logoElement.src = uploadedLogo;
+                    logoElement.style.display = 'block';
+                } else {
+                    logoElement.style.display = 'none';
+                }
                 
                 document.getElementById('previewDepartureCode').textContent = departure;
                 document.getElementById('previewDepartureCity').textContent = airports[departure].city;
