@@ -198,6 +198,18 @@
             margin-bottom: 15px;
         }
         
+        .airline-logo {
+            width: 120px;
+            height: 40px;
+            object-fit: contain;
+            margin-right: 15px;
+        }
+        
+        .airline-name {
+            display: flex;
+            align-items: center;
+        }
+        
         .route-details {
             display: flex;
             justify-content: space-between;
@@ -258,28 +270,25 @@
             font-size: 14px;
         }
         
+        /* Print styles - only show the itinerary */
         @media print {
-            body {
-                background: white;
-                padding: 0;
+            body * {
+                visibility: hidden;
             }
-            
-            .container, .itinerary-preview {
+            .itinerary-preview, .itinerary-preview * {
+                visibility: visible;
+            }
+            .itinerary-preview {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
                 box-shadow: none;
                 margin: 0;
-                padding: 0;
+                padding: 20px;
             }
-            
-            .flight-segment {
-                page-break-inside: avoid;
-            }
-            
             .no-print {
                 display: none !important;
-            }
-            
-            .itinerary-preview {
-                display: block !important;
             }
         }
         
@@ -303,7 +312,7 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container no-print">
         <header>
             <h1>Flight Reservation System</h1>
             <p class="subtitle">Book your flight and generate a printable itinerary</p>
@@ -336,6 +345,25 @@
                                     <option value="DMM">Dammam (DMM)</option>
                                     <option value="RUH">Riyadh (RUH)</option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="airline">Airline</label>
+                                <select id="airline" required>
+                                    <option value="">Select airline</option>
+                                    <option value="SV">Saudi Airlines (SV)</option>
+                                    <option value="AI">Air India (AI)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="flightNumber">Flight Number</label>
+                                <input type="text" id="flightNumber" placeholder="Enter flight number" required>
                             </div>
                         </div>
                     </div>
@@ -392,102 +420,108 @@
                 </form>
             </div>
         </div>
+    </div>
         
-        <div class="itinerary-preview" id="itineraryPreview">
-            <div class="preview-header">
-                <div class="trip-title" id="previewTripTitle">TRIP TO JEDDAH, SAUDI ARABIA</div>
-                <div class="passenger-info">PREPARED FOR<br><strong id="previewPassengerName">ANSARI/HINDA AKIF</strong></div>
-            </div>
+    <div class="itinerary-preview" id="itineraryPreview">
+        <div class="preview-header">
+            <div class="trip-title" id="previewTripTitle">TRIP TO JEDDAH, SAUDI ARABIA</div>
+            <div class="passenger-info">PREPARED FOR<br><strong id="previewPassengerName">ANSARI/HINDA AKIF</strong></div>
+        </div>
+        
+        <div class="reservation-codes">
+            <div><strong>RESERVATION CODE:</strong> <span id="previewReservationCode">FKJNIT</span></div>
+            <div><strong>AIRLINE RESERVATION CODE:</strong> <span id="previewAirlineCode">DXEYUF (SV)</span></div>
+            <div><strong>DEMATER.COM</strong><br>920005511</div>
+        </div>
+        
+        <div class="flight-segment">
+            <div class="segment-header">DEPARTURE: <span id="previewDepartureDate">MONDAY 25 AUG</span><br><small>Please verify flight times prior to departure</small></div>
             
-            <div class="reservation-codes">
-                <div><strong>RESERVATION CODE:</strong> <span id="previewReservationCode">FKJNIT</span></div>
-                <div><strong>AIRLINE RESERVATION CODE:</strong> <span id="previewAirlineCode">DXEYUF (GF)</span></div>
-                <div><strong>DEMATER.COM</strong><br>920005511</div>
-            </div>
-            
-            <div class="flight-segment">
-                <div class="segment-header">DEPARTURE: <span id="previewDepartureDate">MONDAY 25 AUG</span><br><small>Please verify flight times prior to departure</small></div>
+            <div class="flight-details">
+                <div class="airline-info">
+                    <div class="airline-name">
+                        <img id="previewAirlineLogo" src="" alt="Airline Logo" class="airline-logo">
+                        <div>
+                            <strong id="previewAirlineName">SAUDI AIRLINES</strong><br>
+                            <span id="previewFlightCode">SV 0057</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="info-label">Duration:</div>
+                        <div class="info-value" id="previewDuration">3hr(s) 30min(s)</div>
+                    </div>
+                    <div>
+                        <div class="info-label">Cabin:</div>
+                        <div class="info-value">Economy</div>
+                    </div>
+                    <div>
+                        <div class="info-label">Status:</div>
+                        <div class="info-value">Confirmed</div>
+                    </div>
+                </div>
                 
-                <div class="flight-details">
-                    <div class="airline-info">
-                        <div><strong>GULF AIR<br>GF 0057</strong></div>
-                        <div>
-                            <div class="info-label">Duration:</div>
-                            <div class="info-value" id="previewDuration">3hr(s) 30min(s)</div>
-                        </div>
-                        <div>
-                            <div class="info-label">Cabin:</div>
-                            <div class="info-value">Economy</div>
-                        </div>
-                        <div>
-                            <div class="info-label">Status:</div>
-                            <div class="info-value">Confirmed</div>
-                        </div>
+                <div class="route-details">
+                    <div class="departure">
+                        <div class="airport-code" id="previewDepartureCode">BOM</div>
+                        <div id="previewDepartureCity">MUMBAI, INDIA</div>
+                        <div class="time">Departing At: <span id="previewDepartureTime">06:30</span></div>
+                        <div>Terminal: TERMINAL 2 DOM AND INTL</div>
                     </div>
                     
-                    <div class="route-details">
-                        <div class="departure">
-                            <div class="airport-code" id="previewDepartureCode">BOM</div>
-                            <div id="previewDepartureCity">MUMBAI, INDIA</div>
-                            <div class="time">Departing At: <span id="previewDepartureTime">06:30</span></div>
-                            <div>Terminal: TERMINAL 2 DOM AND INTL</div>
-                        </div>
-                        
-                        <div style="text-align: center; width: 10%; padding-top: 20px;">→</div>
-                        
-                        <div class="arrival">
-                            <div class="airport-code" id="previewArrivalCode">JED</div>
-                            <div id="previewArrivalCity">JEDDAH, SAUDI ARABIA</div>
-                            <div class="time">Arriving At: <span id="previewArrivalTime">12:30</span></div>
-                            <div>Terminal: TERMINAL 1</div>
-                        </div>
-                    </div>
+                    <div style="text-align: center; width: 10%; padding-top: 20px;">→</div>
                     
-                    <div class="flight-info">
-                        <div class="info-item">
-                            <div class="info-label">Aircraft:</div>
-                            <div class="info-value">AIRBUS INDUSTRIE A321 JET</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Distance:</div>
-                            <div class="info-value" id="previewDistance">1500 Miles</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Meals:</div>
-                            <div class="info-value" id="previewMeals">Breakfast</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Est. emission:</div>
-                            <div class="info-value" id="previewEmission">172.48 kg CO2</div>
-                        </div>
+                    <div class="arrival">
+                        <div class="airport-code" id="previewArrivalCode">JED</div>
+                        <div id="previewArrivalCity">JEDDAH, SAUDI ARABIA</div>
+                        <div class="time">Arriving At: <span id="previewArrivalTime">12:30</span></div>
+                        <div>Terminal: TERMINAL 1</div>
                     </div>
-                    
-                    <div class="passenger-details">
-                        <div>
-                            <div class="info-label">Passenger Name:</div>
-                            <div class="info-value" id="previewPassenger">ANSARI/HINDA AKIF</div>
-                        </div>
-                        <div>
-                            <div class="info-label">Seats:</div>
-                            <div class="info-value">Check-In Required</div>
-                        </div>
-                        <div>
-                            <div class="info-label">eTicket Receipt(s):</div>
-                            <div class="info-value" id="previewTicketNumber">0722999963076</div>
-                        </div>
+                </div>
+                
+                <div class="flight-info">
+                    <div class="info-item">
+                        <div class="info-label">Aircraft:</div>
+                        <div class="info-value">AIRBUS INDUSTRIE A321 JET</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Distance:</div>
+                        <div class="info-value" id="previewDistance">1500 Miles</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Meals:</div>
+                        <div class="info-value" id="previewMeals">Breakfast</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Est. emission:</div>
+                        <div class="info-value" id="previewEmission">172.48 kg CO2</div>
+                    </div>
+                </div>
+                
+                <div class="passenger-details">
+                    <div>
+                        <div class="info-label">Passenger Name:</div>
+                        <div class="info-value" id="previewPassenger">ANSARI/HINDA AKIF</div>
+                    </div>
+                    <div>
+                        <div class="info-label">Seats:</div>
+                        <div class="info-value">Check-In Required</div>
+                    </div>
+                    <div>
+                        <div class="info-label">eTicket Receipt(s):</div>
+                        <div class="info-value" id="previewTicketNumber">0722999963076</div>
                     </div>
                 </div>
             </div>
-            
-            <div class="footer">
-                <div>ALMATAR.COM</div>
-                <div>920005511</div>
-            </div>
-            
-            <div class="button-group no-print">
-                <button class="btn btn-print" id="printBtn">Print Itinerary</button>
-                <button class="btn" id="editBtn">Edit Details</button>
-            </div>
+        </div>
+        
+        <div class="footer">
+            <div>ALMATAR.COM</div>
+            <div>920005511</div>
+        </div>
+        
+        <div class="button-group no-print">
+            <button class="btn btn-print" id="printBtn">Print Itinerary</button>
+            <button class="btn" id="editBtn">Edit Details</button>
         </div>
     </div>
 
@@ -498,6 +532,18 @@
             const printBtn = document.getElementById('printBtn');
             const editBtn = document.getElementById('editBtn');
             const itineraryPreview = document.getElementById('itineraryPreview');
+            
+            // Airline data with logos
+            const airlines = {
+                'SV': {
+                    name: 'SAUDI AIRLINES',
+                    logo: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTIwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMDA2OTg2Ii8+CjxwYXRoIGQ9Ik0yMCAxMEwzMCAyMEw0MCAxMEg1MEwzNSAyNUw1MCA0MEg0MEwzMCAzMEwyMCA0MEgxMEwyNSAyNUwxMCAxMEgyMFoiIGZpbGw9IiNmZmYiLz4KPHN2ZyB4PSI2MCIgd2lkdGg9IjUwIiBoZWlnaHQ9IjMwIiB2aWV3Qm94PSIwIDAgNTAgMzAiIGZpbGw9Im5vbmUiPgo8cGF0aCBkPSJNMTAgMTBMMjAgMjBMMzAgMTBIMzVMMjUgMjBMMzUgMzBIMzBMMjAgMjVMMTAgMzBINUwxNSAyMEw1IDEwSDEwWiIgZmlsbD0iI2ZmZiIvPgo8L3N2Zz4KPC9zdmc+'
+                },
+                'AI': {
+                    name: 'AIR INDIA',
+                    logo: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTIwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRjE2MjI1Ii8+CjxwYXRoIGQ9Ik0yMCAxMUMzMi41IDExIDM1IDIwIDM1IDIwQzM1IDIwIDM3LjUgMTEgNTAgMTFDNjIuNSAxMSA2NSAyMCA2NSAyMEM2NSAyMCA2Ny41IDExIDgwIDExQzkyLjUgMTEgOTUgMjAgOTUgMjBDOTUgMjAgOTcuNSAxMSAxMTAgMTFDMTE3IDExIDEyMCAxNSAxMjAgMTVDMTIwIDE1IDExNyAyOSAxMTAgMjlDOTcuNSAyOSA5NSAyMCA5NSAyMEM5NSAyMCA5Mi41IDI5IDgwIDI5QzY3LjUgMjkgNjUgMjAgNjUgMjBDNjUgMjAgNjIuNSAyOSA1MCAyOUMzNy41IDI5IDM1IDIwIDM1IDIwQzM1IDIwIDMyLjUgMjkgMjAgMjlDMTMgMjkgMTAgMjUgMTAgMjVDMTAgMjUgMTMgMTEgMjAgMTFaIiBmaWxsPSIjZmZmIi8+CjxjaXJjbGUgY3g9IjIwIiBjeT0iMjAiIHI9IjUiIGZpbGw9IiNGMTYyMjUiLz4KPGNpcmNsZSBjeD0iODAiIGN5PSIyMCIgcj0iNSIgZmlsbD0iI0YxNjIyNSIvPgo8L3N2Zz4='
+                }
+            };
             
             // Set default date to today
             const today = new Date();
@@ -563,6 +609,8 @@
                 // Get form values
                 const departure = document.getElementById('departure').value;
                 const arrival = document.getElementById('arrival').value;
+                const airline = document.getElementById('airline').value;
+                const flightNumber = document.getElementById('flightNumber').value;
                 const departureDate = document.getElementById('departureDate').value;
                 const departureTime = document.getElementById('departureTime').value;
                 const arrivalDate = document.getElementById('arrivalDate').value;
@@ -571,7 +619,7 @@
                 const ticketNumber = document.getElementById('ticketNumber').value;
                 
                 // Validate form
-                if (!departure || !arrival || !departureDate || !departureTime || !arrivalDate || !arrivalTime || !passengerName || !ticketNumber) {
+                if (!departure || !arrival || !airline || !flightNumber || !departureDate || !departureTime || !arrivalDate || !arrivalTime || !passengerName || !ticketNumber) {
                     alert('Please fill in all fields');
                     return;
                 }
@@ -582,13 +630,18 @@
                 document.getElementById('previewPassenger').textContent = passengerName.toUpperCase();
                 
                 document.getElementById('previewReservationCode').textContent = generateRandomCode(6);
-                document.getElementById('previewAirlineCode').textContent = `${generateRandomCode(6)} (GF)`;
+                document.getElementById('previewAirlineCode').textContent = `${generateRandomCode(6)} (${airline})`;
                 
                 document.getElementById('previewDepartureDate').textContent = formatDate(departureDate);
                 
                 document.getElementById('previewDuration').textContent = calculateDuration(
                     departureDate, departureTime, arrivalDate, arrivalTime
                 );
+                
+                // Set airline information
+                document.getElementById('previewAirlineLogo').src = airlines[airline].logo;
+                document.getElementById('previewAirlineName').textContent = airlines[airline].name;
+                document.getElementById('previewFlightCode').textContent = `${airline} ${flightNumber}`;
                 
                 document.getElementById('previewDepartureCode').textContent = departure;
                 document.getElementById('previewDepartureCity').textContent = airports[departure].city;
