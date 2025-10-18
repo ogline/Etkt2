@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Reservation Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .card-header {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            font-size: 1.3rem;
+        }
+        
+        .form-container {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        select:focus, input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+        
+        .col {
+            flex: 1;
+            padding: 0 10px;
+            min-width: 200px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: 600;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+        }
+        
+        .btn-print {
+            background: #2ecc71;
+        }
+        
+        .btn-print:hover {
+            background: #27ae60;
+        }
+        
+        .btn-reset {
+            background: #e74c3c;
+        }
+        
+        .btn-reset:hover {
+            background: #c0392b;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+        
+        .itinerary-preview {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .preview-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .trip-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .passenger-info {
+            margin-bottom: 20px;
+        }
+        
+        .reservation-codes {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        }
+        
+        .flight-segment {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .segment-header {
+            background-color: #f0f0f0;
+            padding: 10px 15px;
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .flight-details {
+            padding: 15px;
+        }
+        
+        .airline-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .route-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .departure, .arrival {
+            width: 45%;
+        }
+        
+        .airport-code {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .time {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .flight-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .info-item {
+            text-align: center;
+        }
+        
+        .info-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .info-value {
+            font-weight: bold;
+        }
+        
+        .passenger-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container, .itinerary-preview {
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .flight-segment {
+                page-break-inside: avoid;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            .itinerary-preview {
+                display: block !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .row {
+                flex-direction: column;
+            }
+            
+            .col {
+                margin-bottom: 15px;
+            }
+            
+            .reservation-codes, .airline-info, .flight-info, .passenger-details {
+                flex-direction: column;
+            }
+            
+            .reservation-codes > div, .airline-info > div, .flight-info > div, .passenger-details > div {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Flight Reservation System</h1>
+            <p class="subtitle">Book your flight and generate a printable itinerary</p>
+        </header>
+        
+        <div class="card">
+            <div class="card-header">
+                Flight Details
+            </div>
+            <div class="form-container">
+                <form id="flightForm">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="departure">Departure City</label>
+                                <select id="departure" required>
+                                    <option value="">Select departure city</option>
+                                    <option value="BOM">Mumbai (BOM)</option>
+                                    <option value="DEL">New Delhi (DEL)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="arrival">Arrival City</label>
+                                <select id="arrival" required>
+                                    <option value="">Select arrival city</option>
+                                    <option value="JED">Jeddah (JED)</option>
+                                    <option value="MED">Medina (MED)</option>
+                                    <option value="DMM">Dammam (DMM)</option>
+                                    <option value="RUH">Riyadh (RUH)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="departureDate">Departure Date</label>
+                                <input type="date" id="departureDate" required>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="departureTime">Departure Time</label>
+                                <input type="time" id="departureTime" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="arrivalDate">Arrival Date</label>
+                                <input type="date" id="arrivalDate" required>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="arrivalTime">Arrival Time</label>
+                                <input type="time" id="arrivalTime" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="passengerName">Passenger Name</label>
+                                <input type="text" id="passengerName" placeholder="Enter full name" required>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="ticketNumber">Ticket Number</label>
+                                <input type="text" id="ticketNumber" placeholder="Enter ticket number" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="button" class="btn" id="generateBtn">Generate Itinerary</button>
+                        <button type="reset" class="btn btn-reset">Reset Form</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="itinerary-preview" id="itineraryPreview">
+            <div class="preview-header">
+                <div class="trip-title" id="previewTripTitle">TRIP TO JEDDAH, SAUDI ARABIA</div>
+                <div class="passenger-info">PREPARED FOR<br><strong id="previewPassengerName">ANSARI/HINDA AKIF</strong></div>
+            </div>
+            
+            <div class="reservation-codes">
+                <div><strong>RESERVATION CODE:</strong> <span id="previewReservationCode">FKJNIT</span></div>
+                <div><strong>AIRLINE RESERVATION CODE:</strong> <span id="previewAirlineCode">DXEYUF (GF)</span></div>
+                <div><strong>DEMATER.COM</strong><br>920005511</div>
+            </div>
+            
+            <div class="flight-segment">
+                <div class="segment-header">DEPARTURE: <span id="previewDepartureDate">MONDAY 25 AUG</span><br><small>Please verify flight times prior to departure</small></div>
+                
+                <div class="flight-details">
+                    <div class="airline-info">
+                        <div><strong>GULF AIR<br>GF 0057</strong></div>
+                        <div>
+                            <div class="info-label">Duration:</div>
+                            <div class="info-value" id="previewDuration">3hr(s) 30min(s)</div>
+                        </div>
+                        <div>
+                            <div class="info-label">Cabin:</div>
+                            <div class="info-value">Economy</div>
+                        </div>
+                        <div>
+                            <div class="info-label">Status:</div>
+                            <div class="info-value">Confirmed</div>
+                        </div>
+                    </div>
+                    
+                    <div class="route-details">
+                        <div class="departure">
+                            <div class="airport-code" id="previewDepartureCode">BOM</div>
+                            <div id="previewDepartureCity">MUMBAI, INDIA</div>
+                            <div class="time">Departing At: <span id="previewDepartureTime">06:30</span></div>
+                            <div>Terminal: TERMINAL 2 DOM AND INTL</div>
+                        </div>
+                        
+                        <div style="text-align: center; width: 10%; padding-top: 20px;">→</div>
+                        
+                        <div class="arrival">
+                            <div class="airport-code" id="previewArrivalCode">JED</div>
+                            <div id="previewArrivalCity">JEDDAH, SAUDI ARABIA</div>
+                            <div class="time">Arriving At: <span id="previewArrivalTime">12:30</span></div>
+                            <div>Terminal: TERMINAL 1</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flight-info">
+                        <div class="info-item">
+                            <div class="info-label">Aircraft:</div>
+                            <div class="info-value">AIRBUS INDUSTRIE A321 JET</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Distance:</div>
+                            <div class="info-value" id="previewDistance">1500 Miles</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Meals:</div>
+                            <div class="info-value" id="previewMeals">Breakfast</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Est. emission:</div>
+                            <div class="info-value" id="previewEmission">172.48 kg CO2</div>
+                        </div>
+                    </div>
+                    
+                    <div class="passenger-details">
+                        <div>
+                            <div class="info-label">Passenger Name:</div>
+                            <div class="info-value" id="previewPassenger">ANSARI/HINDA AKIF</div>
+                        </div>
+                        <div>
+                            <div class="info-label">Seats:</div>
+                            <div class="info-value">Check-In Required</div>
+                        </div>
+                        <div>
+                            <div class="info-label">eTicket Receipt(s):</div>
+                            <div class="info-value" id="previewTicketNumber">0722999963076</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <div>ALMATAR.COM</div>
+                <div>920005511</div>
+            </div>
+            
+            <div class="button-group no-print">
+                <button class="btn btn-print" id="printBtn">Print Itinerary</button>
+                <button class="btn" id="editBtn">Edit Details</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('flightForm');
+            const generateBtn = document.getElementById('generateBtn');
+            const printBtn = document.getElementById('printBtn');
+            const editBtn = document.getElementById('editBtn');
+            const itineraryPreview = document.getElementById('itineraryPreview');
+            
+            // Set default date to today
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById('departureDate').value = formattedDate;
+            document.getElementById('arrivalDate').value = formattedDate;
+            
+            // Airport data
+            const airports = {
+                'BOM': { city: 'MUMBAI, INDIA', country: 'INDIA' },
+                'DEL': { city: 'NEW DELHI, INDIA', country: 'INDIA' },
+                'JED': { city: 'JEDDAH, SAUDI ARABIA', country: 'SAUDI ARABIA' },
+                'MED': { city: 'MEDINA, SAUDI ARABIA', country: 'SAUDI ARABIA' },
+                'DMM': { city: 'DAMMAM, SAUDI ARABIA', country: 'SAUDI ARABIA' },
+                'RUH': { city: 'RIYADH, SAUDI ARABIA', country: 'SAUDI ARABIA' }
+            };
+            
+            // Distances between airports (in miles)
+            const distances = {
+                'BOM-JED': 1500,
+                'BOM-MED': 1600,
+                'BOM-DMM': 1400,
+                'BOM-RUH': 1450,
+                'DEL-JED': 2000,
+                'DEL-MED': 2100,
+                'DEL-DMM': 1900,
+                'DEL-RUH': 1950
+            };
+            
+            // Generate random codes
+            function generateRandomCode(length) {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let result = '';
+                for (let i = 0; i < length; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return result;
+            }
+            
+            // Calculate flight duration
+            function calculateDuration(depDate, depTime, arrDate, arrTime) {
+                const depDateTime = new Date(`${depDate}T${depTime}`);
+                const arrDateTime = new Date(`${arrDate}T${arrTime}`);
+                
+                const diffMs = arrDateTime - depDateTime;
+                const hours = Math.floor(diffMs / (1000 * 60 * 60));
+                const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                
+                return `${hours}hr(s) ${minutes}min(s)`;
+            }
+            
+            // Format date to "DAY DD MON" format
+            function formatDate(dateStr) {
+                const date = new Date(dateStr);
+                const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+                const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+                
+                return `${days[date.getDay()]} ${date.getDate()} ${months[date.getMonth()]}`;
+            }
+            
+            // Generate itinerary
+            generateBtn.addEventListener('click', function() {
+                // Get form values
+                const departure = document.getElementById('departure').value;
+                const arrival = document.getElementById('arrival').value;
+                const departureDate = document.getElementById('departureDate').value;
+                const departureTime = document.getElementById('departureTime').value;
+                const arrivalDate = document.getElementById('arrivalDate').value;
+                const arrivalTime = document.getElementById('arrivalTime').value;
+                const passengerName = document.getElementById('passengerName').value;
+                const ticketNumber = document.getElementById('ticketNumber').value;
+                
+                // Validate form
+                if (!departure || !arrival || !departureDate || !departureTime || !arrivalDate || !arrivalTime || !passengerName || !ticketNumber) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                
+                // Update preview
+                document.getElementById('previewTripTitle').textContent = `TRIP TO ${airports[arrival].city}`;
+                document.getElementById('previewPassengerName').textContent = passengerName.toUpperCase();
+                document.getElementById('previewPassenger').textContent = passengerName.toUpperCase();
+                
+                document.getElementById('previewReservationCode').textContent = generateRandomCode(6);
+                document.getElementById('previewAirlineCode').textContent = `${generateRandomCode(6)} (GF)`;
+                
+                document.getElementById('previewDepartureDate').textContent = formatDate(departureDate);
+                
+                document.getElementById('previewDuration').textContent = calculateDuration(
+                    departureDate, departureTime, arrivalDate, arrivalTime
+                );
+                
+                document.getElementById('previewDepartureCode').textContent = departure;
+                document.getElementById('previewDepartureCity').textContent = airports[departure].city;
+                document.getElementById('previewDepartureTime').textContent = departureTime;
+                
+                document.getElementById('previewArrivalCode').textContent = arrival;
+                document.getElementById('previewArrivalCity').textContent = airports[arrival].city;
+                document.getElementById('previewArrivalTime').textContent = arrivalTime;
+                
+                // Calculate distance
+                const distanceKey = `${departure}-${arrival}`;
+                const distance = distances[distanceKey] || 1500;
+                document.getElementById('previewDistance').textContent = `${distance} Miles`;
+                
+                // Set meals based on time
+                const depHour = parseInt(departureTime.split(':')[0]);
+                let meals = 'Snack';
+                if (depHour < 10) meals = 'Breakfast';
+                else if (depHour < 15) meals = 'Lunch';
+                else if (depHour < 20) meals = 'Dinner';
+                document.getElementById('previewMeals').textContent = meals;
+                
+                // Calculate emissions (rough estimate)
+                const emission = (distance * 0.115).toFixed(2);
+                document.getElementById('previewEmission').textContent = `${emission} kg CO2`;
+                
+                document.getElementById('previewTicketNumber').textContent = ticketNumber;
+                
+                // Show preview
+                itineraryPreview.style.display = 'block';
+                itineraryPreview.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Print itinerary
+            printBtn.addEventListener('click', function() {
+                window.print();
+            });
+            
+            // Edit details
+            editBtn.addEventListener('click', function() {
+                itineraryPreview.style.display = 'none';
+                document.getElementById('flightForm').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
