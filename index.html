@@ -269,6 +269,23 @@
             border-top: 1px solid #ddd;
             color: #666;
             font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .company-logo-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .company-logo {
+            width: 150px;
+            height: 50px;
+            object-fit: contain;
+            margin-right: 10px;
+            display: none;
         }
         
         .logo-info {
@@ -285,6 +302,14 @@
         .logo-preview img {
             max-width: 120px;
             max-height: 40px;
+            border: 1px solid #ddd;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        
+        .company-logo-preview img {
+            max-width: 150px;
+            max-height: 50px;
             border: 1px solid #ddd;
             padding: 5px;
             border-radius: 4px;
@@ -403,20 +428,25 @@
                             </div>
                         </div>
                         <div class="col">
-                            <!-- Empty column for alignment -->
+                            <div class="form-group">
+                                <label for="companyLogo">ALMATAR.COM Logo (Optional)</label>
+                                <input type="file" id="companyLogo" accept=".jpg, .jpeg, .png, .svg, .gif">
+                                <div class="logo-info">Recommended: 150px × 50px (JPG, PNG, SVG, GIF)</div>
+                                <div class="company-logo-preview" id="companyLogoPreview"></div>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <label for="departureDate">Departure Date</label>
+                                <label for="departureDate">Departure Date (Saudi Time)</label>
                                 <input type="date" id="departureDate" required>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label for="departureTime">Departure Time</label>
+                                <label for="departureTime">Departure Time (Saudi Time)</label>
                                 <input type="time" id="departureTime" required>
                             </div>
                         </div>
@@ -425,13 +455,13 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <label for="arrivalDate">Arrival Date</label>
+                                <label for="arrivalDate">Arrival Date (India Time)</label>
                                 <input type="date" id="arrivalDate" required>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label for="arrivalTime">Arrival Time</label>
+                                <label for="arrivalTime">Arrival Time (India Time)</label>
                                 <input type="time" id="arrivalTime" required>
                             </div>
                         </div>
@@ -470,7 +500,12 @@
         <div class="reservation-codes">
             <div><strong>RESERVATION CODE:</strong> <span id="previewReservationCode">FKJNIT</span></div>
             <div><strong>AIRLINE RESERVATION CODE:</strong> <span id="previewAirlineCode">DXEYUF (SV)</span></div>
-            <div><strong>DEMATER.COM</strong><br>920005511</div>
+            <div class="company-logo-container">
+                <img id="previewCompanyLogo" src="" alt="ALMATAR.COM Logo" class="company-logo">
+                <div>
+                    <strong>ALMATAR.COM</strong><br>920005511
+                </div>
+            </div>
         </div>
         
         <div class="flight-segment">
@@ -554,8 +589,12 @@
         </div>
         
         <div class="footer">
-            <div>ALMATAR.COM</div>
-            <div>920005511</div>
+            <div class="company-logo-container">
+                <img id="previewFooterCompanyLogo" src="" alt="ALMATAR.COM Logo" class="company-logo">
+                <div>
+                    <strong>ALMATAR.COM</strong><br>920005511
+                </div>
+            </div>
         </div>
         
         <div class="button-group no-print">
@@ -574,7 +613,10 @@
             const itineraryPreview = document.getElementById('itineraryPreview');
             const logoInput = document.getElementById('airlineLogo');
             const logoPreview = document.getElementById('logoPreview');
+            const companyLogoInput = document.getElementById('companyLogo');
+            const companyLogoPreview = document.getElementById('companyLogoPreview');
             let uploadedLogo = null;
+            let uploadedCompanyLogo = null;
             
             // Airline data
             const airlines = {
@@ -658,10 +700,28 @@
                 }
             });
             
+            // Handle company logo upload
+            companyLogoInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        uploadedCompanyLogo = event.target.result;
+                        companyLogoPreview.innerHTML = `<img src="${uploadedCompanyLogo}" alt="Company Logo Preview">`;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    uploadedCompanyLogo = null;
+                    companyLogoPreview.innerHTML = '';
+                }
+            });
+            
             // Reset form
             resetBtn.addEventListener('click', function() {
                 uploadedLogo = null;
+                uploadedCompanyLogo = null;
                 logoPreview.innerHTML = '';
+                companyLogoPreview.innerHTML = '';
                 itineraryPreview.style.display = 'none';
             });
             
@@ -675,14 +735,20 @@
                 return result;
             }
             
-            // Calculate flight duration
+            // Calculate flight duration considering time zone difference
             function calculateDuration(depDate, depTime, arrDate, arrTime) {
-                const depDateTime = new Date(`${depDate}T${depTime}`);
-                const arrDateTime = new Date(`${arrDate}T${arrTime}`);
+                // Create date objects for departure and arrival
+                const depDateTime = new Date(`${depDate}T${depTime}:00`);
+                const arrDateTime = new Date(`${arrDate}T${arrTime}:00`);
                 
-                const diffMs = arrDateTime - depDateTime;
-                const hours = Math.floor(diffMs / (1000 * 60 * 60));
-                const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                // Account for time zone difference (Saudi Arabia is 2.5 hours behind India)
+                // So actual flight time = (arrival - departure) - 2.5 hours
+                const timeZoneDiff = 2.5 * 60 * 60 * 1000; // 2.5 hours in milliseconds
+                const actualFlightTime = (arrDateTime - depDateTime) - timeZoneDiff;
+                
+                // Calculate hours and minutes
+                const hours = Math.floor(actualFlightTime / (1000 * 60 * 60));
+                const minutes = Math.floor((actualFlightTime % (1000 * 60 * 60)) / (1000 * 60));
                 
                 return `${hours}hr(s) ${minutes}min(s)`;
             }
@@ -734,13 +800,26 @@
                 document.getElementById('previewAirlineName').textContent = airlines[airline].name;
                 document.getElementById('previewFlightCode').textContent = `${airline} ${flightNumber}`;
                 
-                // Set logo if uploaded
+                // Set airline logo if uploaded
                 const logoElement = document.getElementById('previewAirlineLogo');
                 if (uploadedLogo) {
                     logoElement.src = uploadedLogo;
                     logoElement.style.display = 'block';
                 } else {
                     logoElement.style.display = 'none';
+                }
+                
+                // Set company logo if uploaded
+                const companyLogoElement = document.getElementById('previewCompanyLogo');
+                const footerCompanyLogoElement = document.getElementById('previewFooterCompanyLogo');
+                if (uploadedCompanyLogo) {
+                    companyLogoElement.src = uploadedCompanyLogo;
+                    companyLogoElement.style.display = 'block';
+                    footerCompanyLogoElement.src = uploadedCompanyLogo;
+                    footerCompanyLogoElement.style.display = 'block';
+                } else {
+                    companyLogoElement.style.display = 'none';
+                    footerCompanyLogoElement.style.display = 'none';
                 }
                 
                 document.getElementById('previewDepartureCode').textContent = departure;
